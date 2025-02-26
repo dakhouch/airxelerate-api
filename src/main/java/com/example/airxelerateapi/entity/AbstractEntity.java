@@ -1,16 +1,17 @@
 package com.example.airxelerateapi.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.EntityListeners;
-import jakarta.persistence.Id;
-import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.util.Random;
 import java.util.UUID;
 
 @Getter
@@ -21,18 +22,16 @@ import java.util.UUID;
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
 public abstract class AbstractEntity {
-
     @Id
-    @Column(name = "id", columnDefinition = "uuid", updatable = false, nullable = false)
-    @Builder.Default
-    private UUID id = UUID.randomUUID();
-
-    @CreationTimestamp
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+//instant vs LocalDateTime createdDate vs creationTampstamp
+    @CreatedDate
     @Column(name = "created_at", nullable = false, updatable = false)
-    private LocalDateTime createdAt;
+    private Instant createdAt;
 
-    @UpdateTimestamp
-    @Column(name = "updated_at", nullable = false)
+    @LastModifiedDate
+    @Column(name = "updated_at",nullable = false)
     private LocalDateTime updatedAt;
 
     @Column(nullable = false)

@@ -15,7 +15,7 @@ spring:
     name: airxelerate-api
 
   datasource:
-    url: jdbc:h2:mem:airxelerateH2DB
+    url: jdbc:h2:mem:airxelerateH2DB;DB_CLOSE_ON_EXIT=TRUE;MODE=MySQL
     driver-class-name: org.h2.Driver
     username: sa
     password:
@@ -30,5 +30,5 @@ spring:
 debug: true
 logging:
   level:
-    root: DEBUG
+    root: error
 
