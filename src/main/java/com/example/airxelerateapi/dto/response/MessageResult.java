@@ -1,4 +1,4 @@
-package com.example.airxelerateapi.dto;
+package com.example.airxelerateapi.dto.response;
 import com.example.airxelerateapi.enumeration.MessageStatus;
 import lombok.Getter;
 

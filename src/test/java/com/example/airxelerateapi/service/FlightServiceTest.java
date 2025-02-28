@@ -1,0 +1,4 @@
+package com.example.airxelerateapi.service;
+
+public class FlightServiceTest {
+}

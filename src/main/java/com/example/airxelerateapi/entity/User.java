@@ -1,13 +1,13 @@
 package com.example.airxelerateapi.entity;
 
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
+import com.example.airxelerateapi.enumeration.Role;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.List;
@@ -23,6 +23,10 @@ public class User extends AbstractEntity implements UserDetails{
     @Column(nullable = false)
     private String lastName;
 
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
+    @Getter
     @Column(unique = true, length = 100, nullable = false)
     private String email;
 
@@ -36,9 +40,8 @@ public class User extends AbstractEntity implements UserDetails{
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
+        return List.of(new SimpleGrantedAuthority(role.name()));
     }
-
     @Override
     public String getUsername() {
         return email;
