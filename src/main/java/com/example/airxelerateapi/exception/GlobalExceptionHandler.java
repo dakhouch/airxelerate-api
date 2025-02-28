@@ -14,17 +14,17 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(BusinessException.class)
     public Result<List<MessageResult>> handleBusinessException(BusinessException ex) {
-        return  Result.createResultWithBody(HttpStatus.NOT_ACCEPTABLE,
+        return  Result.createResultWithBody(HttpStatus.NOT_ACCEPTABLE.value(),
                 new MessageResult(ex.getMessage(), MessageStatus.ERROR), ex.getMessages());
     }
 
     @ExceptionHandler(TechnicalException.class)
     public Result<Void> handleTechnicalException(TechnicalException ex) {
-        return  Result.createResultWithoutBody(HttpStatus.INTERNAL_SERVER_ERROR, new MessageResult(ex.getMessage(), MessageStatus.ERROR));
+        return  Result.createResultWithoutBody(HttpStatus.INTERNAL_SERVER_ERROR.value(), new MessageResult(ex.getMessage(), MessageStatus.ERROR));
     }
 
     @ExceptionHandler(Exception.class)
     public Result<Void> handleException(Exception ex) {
-        return  Result.createResultWithoutBody(HttpStatus.INTERNAL_SERVER_ERROR, new MessageResult(ex.getMessage(), MessageStatus.ERROR));
+        return  Result.createResultWithoutBody(HttpStatus.INTERNAL_SERVER_ERROR.value(), new MessageResult(ex.getMessage(), MessageStatus.ERROR));
     }
 }

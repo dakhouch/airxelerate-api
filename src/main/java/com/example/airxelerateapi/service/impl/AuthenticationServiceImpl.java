@@ -11,7 +11,10 @@ import com.example.airxelerateapi.exception.BusinessException;
 import com.example.airxelerateapi.exception.TechnicalException;
 import com.example.airxelerateapi.mapper.AuthMapper;
 import com.example.airxelerateapi.repository.UserRepository;
+import com.example.airxelerateapi.service.core.MessageReader;
 import com.example.airxelerateapi.service.facade.AuthenticationService;
+import com.example.airxelerateapi.util.ApiMessage;
+import com.example.airxelerateapi.util.ExceptionMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -29,7 +32,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final AuthMapper authMapper;
     private final UserRepository userRepository;
     private final AuthenticationManager authenticationManager;
-
+    private final MessageReader messageReader;
     public Result<AuthResponseDto> authenticate(LoginRequestDto input) {
 
         authenticationManager.authenticate(
@@ -41,7 +44,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         User authenticatedUser=userRepository
                 .findByEmail(input.email())
-                .orElseThrow(()->new TechnicalException("CONFLICT"));
+                .orElseThrow(()->new TechnicalException(messageReader.getMessage(ExceptionMessage.UNEXPECTED_BEHAVIOR)));
 
         AccessTokenResponseDto accessTokenResponseDto=AccessTokenResponseDto
                 .builder()
@@ -60,8 +63,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .build();
 
         return  Result.createResultWithBody(
-                HttpStatus.OK,
-                new MessageResult("AUTH_SUCCESS", MessageStatus.INFO),
+                HttpStatus.OK.value(),
+                new MessageResult(messageReader.getMessage(ApiMessage.POST_AUTH_USER), MessageStatus.INFO),
                 loginResponse
         );
     }
@@ -70,9 +73,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         String username = jwtProvider.extractUsername(refreshToken);
         User authenticatedUser = userRepository
                 .findByEmail(username)
-                .orElseThrow(() -> new TechnicalException("CONFLICT"));
+                .orElseThrow(() -> new TechnicalException(messageReader.getMessage(ExceptionMessage.UNEXPECTED_BEHAVIOR)));
 
-        if (!jwtProvider.isTokenValid(refreshToken, authenticatedUser)) throw new BusinessException("INVALID_REFRESH_TOKEN",HttpStatus.UNAUTHORIZED);
+        if (!jwtProvider.isTokenValid(refreshToken, authenticatedUser)) throw new BusinessException(ExceptionMessage.INVALID_REFRESH_TOKEN,HttpStatus.UNAUTHORIZED);
 
         AccessTokenResponseDto accessTokenResponseDto = AccessTokenResponseDto
                 .builder()
@@ -81,8 +84,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .build();
 
         return Result.createResultWithBody(
-                HttpStatus.OK,
-                new MessageResult("REFRESH_TOKEN_SUCCESS", MessageStatus.INFO),
+                HttpStatus.OK.value(),
+                new MessageResult(messageReader.getMessage(ApiMessage.GET_REFRESH_TOKEN), MessageStatus.INFO),
                 accessTokenResponseDto
         );
     }

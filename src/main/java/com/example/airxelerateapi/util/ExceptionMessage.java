@@ -9,4 +9,6 @@ public interface ExceptionMessage {
     String FLIGHT_ALREADY_EXIST="exception.FlightAlreadyExistException";
     String FLIGHT_NOT_FOUND="exception.FlightNotFoundException";
 
+    String INVALID_REFRESH_TOKEN="exception.InvalidRefreshTokenException";
+    String UNEXPECTED_BEHAVIOR="exception.UnexpectedBehaviorException";
 }
