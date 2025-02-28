@@ -26,6 +26,7 @@ public class AuthController {
     }
     @PostMapping("/refresh-token")
     public Result<AccessTokenResponseDto> refreshToken(@RequestBody String refreshToken) throws BusinessException {
+        log.debug("Refresh token: {}", refreshToken);
         return authenticationService.authenticate(refreshToken);
     }
 }

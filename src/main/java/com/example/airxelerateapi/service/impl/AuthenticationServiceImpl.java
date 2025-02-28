@@ -19,7 +19,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
 
-import static com.example.airxelerateapi.util.Constants.AUTH_TOKEN_TYPE;
+import static com.example.airxelerateapi.util.Config.AUTH_TOKEN_TYPE;
 
 @Service
 @RequiredArgsConstructor
@@ -61,7 +61,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         return  Result.createResultWithBody(
                 HttpStatus.OK,
-                MessageResult.getMessageResultWithoutField("AUTH_SUCCESS", MessageStatus.INFO),
+                new MessageResult("AUTH_SUCCESS", MessageStatus.INFO),
                 loginResponse
         );
     }
@@ -74,7 +74,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         if (!jwtProvider.isTokenValid(refreshToken, authenticatedUser)) throw new BusinessException("INVALID_REFRESH_TOKEN",HttpStatus.UNAUTHORIZED);
 
-
         AccessTokenResponseDto accessTokenResponseDto = AccessTokenResponseDto
                 .builder()
                 .token(jwtProvider.generateAccessToken(authenticatedUser))
@@ -83,7 +82,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         return Result.createResultWithBody(
                 HttpStatus.OK,
-                MessageResult.getMessageResultWithoutField("REFRESH_TOKEN_SUCCESS", MessageStatus.INFO),
+                new MessageResult("REFRESH_TOKEN_SUCCESS", MessageStatus.INFO),
                 accessTokenResponseDto
         );
     }

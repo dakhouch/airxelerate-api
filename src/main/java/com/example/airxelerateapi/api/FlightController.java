@@ -31,8 +31,7 @@ public class FlightController {
     @PreAuthorize("hasAuthority('USER')")
     @GetMapping
     public Result<PageResponseDto<FlightResponseDto>> getAllFlights(@RequestParam(defaultValue = "0") Integer page,
-                                                                    @RequestParam(defaultValue = "10")Integer pageSize)
-    {
+                                                                    @RequestParam(defaultValue = "10")Integer pageSize) throws BusinessException {
         return flightService.getAllFlights(PageRequest.of(page,pageSize));
     }
 
