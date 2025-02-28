@@ -8,12 +8,12 @@ import com.example.airxelerateapi.exception.BusinessException;
 import org.springframework.data.domain.Pageable;
 
 
-public interface FlightService {
+public interface FlightService  {
     Result<Void> addFlight(FlightRequestDto flight) throws BusinessException;
 
     Result<FlightResponseDto> getFlightById(Long id) throws BusinessException;
 
-    Result<PageResponseDto<FlightResponseDto>> getAllFlights(Pageable pageable);
+    Result<PageResponseDto<FlightResponseDto>> getAllFlights(Pageable pageable) throws BusinessException;
 
     Result<Void> deleteFlight(Long id) throws BusinessException;
 }

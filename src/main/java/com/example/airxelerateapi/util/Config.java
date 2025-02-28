@@ -1,5 +1,5 @@
 package com.example.airxelerateapi.util;
 
-public interface Constants {
+public interface Config {
     String AUTH_TOKEN_TYPE="Bearer";
 }

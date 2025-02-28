@@ -10,11 +10,11 @@ security:
     secret-key: 3cfa76ef14937c1c0ea519f8fc057a80fcd04a7420f8e8bcd0a7567c272e007b
     access-expiration-time: 3600000
     refresh-expiration-time: 6000000
-
 spring:
   application:
     name: airxelerate-api
-
+  messages:
+    basename: i18n/messages
   datasource:
     url: jdbc:h2:mem:airxelerateH2DB;DB_CLOSE_ON_EXIT=TRUE;MODE=MySQL
     driver-class-name: org.h2.Driver
