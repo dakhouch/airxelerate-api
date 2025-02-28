@@ -19,10 +19,7 @@ import com.example.airxelerateapi.validator.FlightValidator;
 import com.example.airxelerateapi.validator.GlobalValidator;
 import lombok.RequiredArgsConstructor;
 import org.aspectj.bridge.MessageWriter;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.ExampleMatcher;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -46,7 +43,7 @@ public class FlightServiceImpl implements FlightService {
         if(flightRepository.findOne(example).isPresent()) throw new BusinessException(messageReader.getMessage(ExceptionMessage.FLIGHT_ALREADY_EXIST),HttpStatus.CONFLICT);
         flightRepository.save(flight);
         return Result.createResultWithoutBody(
-                HttpStatus.OK,
+                HttpStatus.OK.value(),
                 new MessageResult(messageReader.getMessage(ApiMessage.CREATE_FLIGHT),MessageStatus.INFO));
     }
 
@@ -55,13 +52,14 @@ public class FlightServiceImpl implements FlightService {
         Flight flight=flightRepository.findById(id).orElseThrow(()->new BusinessException(ExceptionMessage.FLIGHT_NOT_FOUND,HttpStatus.NOT_FOUND));
         FlightResponseDto flightResponseDto=flightMapper.toFlightResponseDto(flight);
         return Result.createResultWithBody(
-                HttpStatus.OK,
+                HttpStatus.OK.value(),
                 new MessageResult(ApiMessage.GET_FLIGHT_BY_ID,MessageStatus.INFO),
                 flightResponseDto);
     }
 
     @Override
-    public Result<PageResponseDto<FlightResponseDto>> getAllFlights(Pageable pageable) throws BusinessException {
+    public Result<PageResponseDto<FlightResponseDto>> getAllFlights(Integer page,Integer pageSize) throws BusinessException {
+       Pageable pageable=PageRequest.of(page,pageSize);
        globalValidator.validatePageRequest(pageable.getPageNumber(),pageable.getPageSize());
        Page<Flight> flights=flightRepository.findAll(pageable);
        Pagination pagination= Pagination
@@ -75,7 +73,7 @@ public class FlightServiceImpl implements FlightService {
                .getContent();
 
        return Result.createResultWithBody(
-                HttpStatus.OK,
+                HttpStatus.OK.value(),
                 new MessageResult(messageReader.getMessage(ApiMessage.GET_FLIGHTS),MessageStatus.INFO),
                 new PageResponseDto<>(pagination,flightResponseDtoList)
         );
@@ -86,7 +84,7 @@ public class FlightServiceImpl implements FlightService {
         flightRepository.findById(id).orElseThrow(()->new BusinessException(ExceptionMessage.FLIGHT_NOT_FOUND,HttpStatus.NOT_FOUND));
         flightRepository.deleteById(id);
         return Result.createResultWithoutBody(
-                HttpStatus.OK,
+                HttpStatus.OK.value(),
                 new MessageResult(messageReader.getMessage(ApiMessage.DELETE_FLIGHT),MessageStatus.INFO));
     }
 }

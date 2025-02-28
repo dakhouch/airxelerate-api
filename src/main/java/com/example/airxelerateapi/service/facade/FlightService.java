@@ -13,7 +13,7 @@ public interface FlightService  {
 
     Result<FlightResponseDto> getFlightById(Long id) throws BusinessException;
 
-    Result<PageResponseDto<FlightResponseDto>> getAllFlights(Pageable pageable) throws BusinessException;
+    Result<PageResponseDto<FlightResponseDto>> getAllFlights(Integer page,Integer pageSize) throws BusinessException;
 
     Result<Void> deleteFlight(Long id) throws BusinessException;
 }

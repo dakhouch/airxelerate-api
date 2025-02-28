@@ -32,7 +32,7 @@ public class FlightController {
     @GetMapping
     public Result<PageResponseDto<FlightResponseDto>> getAllFlights(@RequestParam(defaultValue = "0") Integer page,
                                                                     @RequestParam(defaultValue = "10")Integer pageSize) throws BusinessException {
-        return flightService.getAllFlights(PageRequest.of(page,pageSize));
+        return flightService.getAllFlights(page,pageSize);
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
